@@ -1,0 +1,465 @@
+<h3>Danh sách nhân viên</h3>
+<button onclick="openAddModal()">Thêm nhân viên</button>
+<table>
+    <thead>
+    <tr>
+        <th>Họ và tên</th>
+        <th>Email</th>
+        <th>Số điện thoại</th>
+        <th>Phòng ban</th>
+        <th>Ngày tuyển dụng</th>
+        <th>Thao tác</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for employee in employees %}
+        <tr>
+            <td>{{ employee.first_name }} {{ employee.last_name }}</td>
+            <td>{{ employee.email }}</td>
+            <td>{{ employee.phone }}</td>
+            <td>{{ employee.department }}</td>
+            <td>{{ employee.hire_date }}</td>
+            <td>
+                <button onclick="openUpdateModal({{ employee.id }})">Sửa</button>
+                <button onclick="deleteEmployee({{ employee.id }})">Xóa</button>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<!-- Modal Update Employee -->
+<div id="updateEmployeeModal" class="modal">
+    <div class="modal-content">
+        <span id="closeModalBtn" class="close">&times;</span>
+        <h2>Cập nhật thông tin nhân viên</h2>
+            <input type="hidden" id="employeeId">
+            <input type="text" id="update_first_name" placeholder="First Name">
+            <input type="text" id="update_last_name" placeholder="Last Name">
+            <input type="email" id="update_email" placeholder="Email">
+            <input type="text" id="update_phone" placeholder="Phone">
+            <input type="text" id="update_department" placeholder="Department">
+            <input type="date" id="update_hire_date" placeholder="Hire Date">
+            <button onclick="updateEmployee()">Cập nhật nhân viên</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal thêm nhân viên -->
+<div id="addEmployeeModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" id="closeAddModalBtn">&times;</span>
+        <h4>Thêm nhân viên mới</h4>
+        <form id="addEmployeeForm">
+            <input type="text" id="first_name" placeholder="First Name">
+            <input type="text" id="last_name" placeholder="Last Name">
+            <input type="email" id="email" placeholder="Email">
+            <input type="text" id="phone" placeholder="Phone">
+            <input type="text" id="department" placeholder="Department">
+            <input type="date" id="hire_date" placeholder="Hire Date">
+            <button onclick="addEmployee()">Thêm nhân viên</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Fetch danh sách nhân viên khi trang được tải
+    window.onload = function() {
+        fetchEmployees();
+    };
+
+    function fetchEmployees() {
+        fetch('/accounts/api/employees/')
+            .then(response => response.json())
+            .then(data => {
+                if (data.length > 0) {
+                    renderEmployeeTable(data);
+                } else {
+                    alert('Không có dữ liệu nhân viên.');
+                }
+                console.log(data)
+            })
+            .catch(error => {
+                console.log('Error fetching employees:', error);
+                alert('Đã xảy ra lỗi khi tải danh sách nhân viên.');
+            });
+    }
+
+    // Hàm để lấy mã CSRF từ cookie
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
+
+    // Hàm để render dữ liệu vào bảng
+    function renderEmployeeTable(employees) {
+        const tableBody = document.querySelector('tbody');
+        tableBody.innerHTML = '';  // Làm rỗng bảng trước khi thêm dữ liệu mới
+
+        employees.forEach(employee => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+            <td>${employee.first_name} ${employee.last_name}</td>
+            <td>${employee.email}</td>
+            <td>${employee.phone}</td>
+            <td>${employee.department}</td>
+            <td>${employee.hire_date}</td>
+            <td>
+                <button onclick="openUpdateModal(${employee.id})">Sửa</button>
+                <button onclick="deleteEmployee(${employee.id})">Xóa</button>
+            </td>
+        `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    // Mở modal thêm nhân viên
+    function addEmployee() {
+        const datanew = {
+            first_name: document.getElementById('first_name').value,
+            last_name: document.getElementById('last_name').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            department: document.getElementById('department').value,
+            hire_date: document.getElementById('hire_date').value
+        };
+
+        // Gửi yêu cầu POST để thêm nhân viên mới
+        fetch('/accounts/api/employees/create/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify(datanew),
+        })
+
+                .then(response => response.json())
+            .then(data => {
+                console.log('Response:', data);
+                if (data.success) {
+                    alert('Thêm nhân viên thành công!');
+                    document.getElementById('addEmployeeModal').style.display = 'none';
+                    fetchEmployees();
+                } else {
+                    alert('Thêm nhân viên thất bại!');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Đã xảy ra lỗi khi thêm nhân viên!');
+            });
+    }
+
+    function openAddModal() {
+        document.getElementById('addEmployeeModal').style.display = 'block';
+    }
+    document.getElementById('closeAddModalBtn').addEventListener('click', function() {
+        document.getElementById('addEmployeeModal').style.display = 'none';
+    });
+
+    fetchEmployees();
+
+    // Mở modal khi nhấn nút "Sửa"
+    function openUpdateModal(employeeId) {
+        fetch(`/accounts/api/employees/${employeeId}/`)
+            .then(response => {
+                console.log("Status:", response.status);
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Employee data:", data);
+                // Kiểm tra tên trường dữ liệu từ API
+                document.getElementById('employeeId').value = data.id;
+                document.getElementById('update_first_name').value = data.first_name || '';
+                document.getElementById('update_last_name').value = data.last_name || '';
+                document.getElementById('update_email').value = data.email || '';
+                document.getElementById('update_phone').value = data.phone || '';
+                document.getElementById('update_department').value = data.department || '';
+                document.getElementById('update_hire_date').value = data.hire_date || '';
+
+                document.getElementById('updateEmployeeModal').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error fetching employee data:', error);
+            });
+    }
+
+    function updateEmployee() {
+        const updatedData = {
+            first_name: document.getElementById('update_first_name').value,
+            last_name: document.getElementById('update_last_name').value,
+            email: document.getElementById('update_email').value,
+            phone: document.getElementById('update_phone').value,
+            department: document.getElementById('update_department').value,
+            hire_date: document.getElementById('update_hire_date').value,
+        };
+
+        const employeeId = document.getElementById('employeeId').value;
+
+        fetch(`/accounts/api/employees/${employeeId}/update/`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,  // Thêm mã CSRF vào header
+            },
+            body: JSON.stringify(updatedData),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if (data.success) {
+                    alert('Cập nhật thành công!');
+                    document.getElementById('updateEmployeeModal').style.display = 'none'; // Đóng modal
+                    fetchEmployees();  // Làm mới danh sách nhân viên sau khi cập nhật
+                } else {
+                    alert('Cập nhật thất bại!');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Đã xảy ra lỗi khi cập nhật!');
+            });
+    }
+
+
+    // Xóa nhân viên
+    function deleteEmployee(employeeId) {
+        if (confirm('Bạn có chắc chắn muốn xóa nhân viên này?')) {
+            fetch(`/accounts/api/employees/${employeeId}/delete/`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRFToken': csrftoken,  // Thêm mã CSRF vào header
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Xóa thành công!');
+                        fetchEmployees();  // Làm mới danh sách nhân viên sau khi xóa
+                    } else {
+                        alert('Xóa thất bại!');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Đã xảy ra lỗi khi xóa!');
+                });
+        }
+    }
+
+</script>
+
+<style>
+    /* Kiểu cho modal */
+    .modal {
+        display: none;  /* Ẩn modal mặc định */
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);  /* Nền mờ đen */
+    }
+
+    /* Kiểu cho nội dung của modal */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;  /* Chiều rộng của modal */
+        max-width: 400px;
+        border-radius: 5px;
+    }
+
+    /* Nút đóng modal */
+    .close-btn {
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        position: absolute;
+        top: 10px;
+        right: 15px;
+    }
+
+    .close-btn:hover,
+    .close-btn:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    /* Kiểu cho form cập nhật nhân viên */
+    form {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    form input, form button {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    form button {
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+    }
+
+    form button:hover {
+        background-color: #45a049;
+    }
+
+    /* Tạo kiểu cho bảng */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+
+    thead {
+        background-color: #f2f2f2;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    td {
+        background-color: #f9f9f9;
+    }
+
+    /* Tạo kiểu cho các nút thao tác */
+    button {
+        padding: 8px 16px;
+        margin: 5px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        opacity: 0.8;
+    }
+
+    button:focus {
+        outline: none;
+    }
+
+    button:nth-child(1) {
+        background-color: #4CAF50; /* Màu nút "Sửa" */
+        color: white;
+    }
+
+    button:nth-child(2) {
+        background-color: #f44336; /* Màu nút "Xóa" */
+        color: white;
+    }
+
+    button:nth-child(1):hover {
+        background-color: #45a049; /* Màu khi di chuột qua nút "Sửa" */
+    }
+
+    button:nth-child(2):hover {
+        background-color: #e53935; /* Màu khi di chuột qua nút "Xóa" */
+    }
+
+    /*css thêm nv*/
+    /* Modal thêm nhân viên */
+    .modal {
+        display: none;  /* Ẩn modal mặc định */
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);  /* Nền mờ đen */
+    }
+
+    /* Nội dung của modal */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;  /* Chiều rộng của modal */
+        max-width: 400px;
+        border-radius: 5px;
+    }
+
+    /* Nút đóng modal */
+    .close-btn {
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        position: absolute;
+        top: 10px;
+        right: 15px;
+    }
+
+    .close-btn:hover,
+    .close-btn:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    /* Kiểu cho form thêm nhân viên */
+    form {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    form input, form button {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    form button {
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+    }
+
+    form button:hover {
+        background-color: #45a049;
+    }
+
+
+</style>
