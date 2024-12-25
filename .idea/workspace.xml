@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="059c784a-80cd-4be2-af4e-f0481765e06b" name="Changes" comment="" />
+    <list default="true" id="140797f2-301e-449d-bca3-eb2657c6a89b" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,37 +13,23 @@
   <component name="ComposerSettings">
     <execution />
   </component>
-  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
-    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Python Script" />
-        <option value="HTML File" />
-      </list>
-    </option>
-  </component>
   <component name="ProjectCodeStyleSettingsMigration">
     <option name="version" value="2" />
   </component>
-  <component name="ProjectColorInfo">{
-  &quot;customColor&quot;: &quot;&quot;,
-  &quot;associatedIndex&quot;: 8
-}</component>
-  <component name="ProjectId" id="2oSmGrT019H6y9bgeLGSVFWoXLh" />
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 8
+}]]></component>
+  <component name="ProjectId" id="2qfQIjQLBEpIrllwXKOEXWN5rjj" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Django Server.Demo.executor": "Run",
     "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/codedoan-main",
+    "last_opened_file_path": "D:/KTHDV/Lab4",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -52,26 +38,14 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\Linh\Demo\accounts\templates\accounts" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\Linh\Demo\Demo\templates" />
-      <recent name="D:\Linh\Demo\my_api" />
-      <recent name="D:\Linh\Demo\accounts\templates\accounts" />
-      <recent name="D:\Linh\Demo\Demo" />
-    </key>
-  </component>
   <component name="RunManager">
-    <configuration name="Demo" type="Python.DjangoServer" factoryName="Django server">
-      <module name="Demo" />
+    <configuration name="Lab2" type="Python.DjangoServer" factoryName="Django server">
+      <module name="Lab4" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
-        <env name="DJANGO_SETTINGS_MODULE" value="Demo.settings" />
       </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -80,7 +54,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="launchJavascriptDebuger" value="false" />
       <option name="port" value="8000" />
-      <option name="host" value="localhost" />
+      <option name="host" value="" />
       <option name="additionalOptions" value="" />
       <option name="browserUrl" value="" />
       <option name="runTestServer" value="false" />
@@ -93,30 +67,19 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23726.103" />
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23726.103" />
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.218" />
       </set>
     </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="059c784a-80cd-4be2-af4e-f0481765e06b" name="Changes" comment="" />
-      <created>1730871275190</created>
+      <changelist id="140797f2-301e-449d-bca3-eb2657c6a89b" name="Changes" comment="" />
+      <created>1735051090063</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1730871275190</updated>
-      <workItem from="1730871276246" duration="1741000" />
-      <workItem from="1730981439006" duration="760000" />
-      <workItem from="1731157654404" duration="6861000" />
-      <workItem from="1731313075432" duration="2579000" />
-      <workItem from="1731317818076" duration="1155000" />
-      <workItem from="1731334734405" duration="16855000" />
-      <workItem from="1731405663469" duration="14619000" />
-      <workItem from="1731422016076" duration="7806000" />
-      <workItem from="1731436012649" duration="766000" />
-      <workItem from="1731462293799" duration="1205000" />
-      <workItem from="1731465748932" duration="696000" />
+      <updated>1735051090063</updated>
+      <workItem from="1735051096512" duration="1119000" />
     </task>
     <servers />
   </component>
